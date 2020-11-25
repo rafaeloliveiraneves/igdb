@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:igdb/repositories/game_repository.dart';
 import 'package:igdb/screens/games.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Games(),
+      home: Games(gameRepository: GameRepository()),
     );
   }
 }
