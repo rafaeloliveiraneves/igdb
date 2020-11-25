@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
 
 import 'package:igdb/models/game.dart';
-import 'package:igdb/services/game.dart';
+import 'package:igdb/repositories/game_repository.dart';
 
 class Games extends StatefulWidget {
-  @override
+  final GameRepository gameRepository;
+
+  Games({Key key, @required this.gameRepository}) : super(key: key);
+
   _GamesState createState() => _GamesState();
 }
 
 class _GamesState extends State<Games> {
-  Future<List<Game>> futureGames;
+  Future<List<Game>> _futureGames;
 
   @override
   void initState() {
+    _futureGames = widget.gameRepository.fetchGames();
     super.initState();
-    futureGames = fetchGames();
   }
 
   FutureBuilder<List<Game>> _buildGameList() {
     return FutureBuilder<List<Game>>(
-      future: futureGames,
+      future: _futureGames,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
 
         if (!snapshot.hasData) {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
 
         return ListView.separated(
