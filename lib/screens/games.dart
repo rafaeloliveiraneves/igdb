@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:igdb/models/game.dart';
 import 'package:igdb/repositories/game_repository.dart';
+import 'game_detail.dart';
 
 class Games extends StatefulWidget {
   final GameRepository gameRepository;
@@ -36,16 +37,24 @@ class _GamesState extends State<Games> {
             separatorBuilder: (BuildContext context, int index) => Divider(),
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
+              final game = snapshot.data[index];
+
               return ListTile(
                   leading: SizedBox(
                       height: 100.0,
                       width: 100.0,
                       child: Image.network(
-                          "https://images.igdb.com/igdb/image/upload/t_cover_big/${snapshot.data[index].cover.imageId}.jpg",
+                          "https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover.imageId}.jpg",
                           fit: BoxFit.fill)),
                   title: Text(
-                    snapshot.data[index].name,
-                  ));
+                    game.name,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GameDetail(game: game)));
+                  });
             });
       },
     );
